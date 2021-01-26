@@ -6,23 +6,31 @@ push constant 10
 pop local 0
 push constant 21'''
 
+def commandType(line):
+    if line.startswith('push'):
+        return "C_PUSH"
+    elif line.startswith('pop'):
+        return "C_POP"
+    else:
+        return "C_ARITHMETIC"
 
-def Main:
+
+def Main():
     #prompt for the file name/location
-    vmfilelocation = input("Please input the path to file: ")
-    filename, fileext = os.path.splitext(vmfilelocation)
+    with open('samplecode.txt') as f:
+        lines = f.readlines()
+        for line in lines:
+            line.strip('\n')
+            type = commandType(line)
+            print(type)
+
 
 
     #create the asm file
-    asmfilename = filename + '.asm'
-    asmfile = open(asmfilename,'w')
+
 
     #initiate the loop
-    with open(vmfilelocation,'r') as vmfile:
-        line = vmfile.readline()
-        while line:
-            print("//",line)
-            
+
 
     #What is the command type?
 
