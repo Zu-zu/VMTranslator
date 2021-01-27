@@ -92,7 +92,34 @@ def writePushPop(command,segment,index,line):
     else:
         print('Bad line bro')
 
-#def writeArithmetic(segment,line):
+def writeArithmetic(segment,line):
+    if segment == "ADD":
+        f=open(outputfile,'a')
+        f.write("//"+line)
+        f.write("@SP\n")
+        f.write("AM=M-1\n")
+        f.write("D=M\n")
+        f.write("A=A-1\n")
+        f.write("M=M+D\n")
+        f.close()
+    elif segment =="SUB":
+        f=open(outputfile,'a')
+        f.write("//"+line)
+        f.write("@SP\n")
+        f.write("AM=M-1\n")
+        f.write("D=M\n")
+        f.write("A=A-1\n")
+        f.write("M=M-D\n")
+        f.close()
+    elif segment =="NEG":
+        f=open(outputfile,'a')
+        f.write("//"+line)
+        f.write("@SP\n")
+        f.write("A=A-1\n")
+        f.write("M=-M\n")
+    else:
+        print("command not available")
+
 
 def Main():
     #prompt for the file name/location
