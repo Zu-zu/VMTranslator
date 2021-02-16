@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 import os
-inputfile = input("Please inut the name of the text file with the VM code: ")
-root,ext = os.path.splitext(inputfile)
-outputfile = "translated"+root+".txt"
+import argparse
+
 
 def commandType(line):
     if line.startswith('push'):
@@ -31,6 +30,8 @@ def whatArithmetic(line):
         return "OR"
     elif line.startswith('not'):
         return "NOT"
+    else:
+        print("invalid input")
 
 def getArguments(line):
     command, arga, argb = line.split(' ')
@@ -45,12 +46,15 @@ def getArguments(line):
         arg1 = "THIS"
     elif arga == "that":
         arg1 = "THAT"
+    elif arga == "temp":
+        arg1 = "TEMP"
+    elif arga =="pointer":
+        arg1 = "POINT"
     else:
         print("invalid arg1")
-
     return arg1, arg2
 
-def writePushPop(command,segment,index,line):
+def writePushPop(command,segment,index,line,outputfile):
     if command == "PUSH" and segment == "constant":
         f = open(outputfile,'a')
         f.write("//"+line)
@@ -93,7 +97,7 @@ def writePushPop(command,segment,index,line):
     else:
         print('Bad line bro')
 
-def writeArithmetic(segment,line,count):
+def writeArithmetic(segment,line,count,outputfile):
     if segment == "ADD":
         f=open(outputfile,'a')
         f.write("//"+line)
@@ -224,7 +228,7 @@ def writeArithmetic(segment,line,count):
         f.write("0;JMP\n")
         f.write("(@Back"+count+")\n")
         f.close()
-    elif segment = "NOT":
+    elif segment == "NOT":
         f.open(outputfile,'a')
         f.write("//"+line)
         f.write("@SP\n")
@@ -249,29 +253,45 @@ def writeArithmetic(segment,line,count):
 
 def Main():
     #prompt for the file name/location
+    parser = argparse.ArgumentParser(description="Enter path or directory")
+    parser.add_argument('filename',action = "store")
+    parser.add_argument('-o','--outfile',action = "store",default = None,dest = 'outname')
+    args = parser.parse_args()
+    inputfile = args.filename
+    outputfile = args.outname
+    root,ext = os.path.splitext(inputfile)
+    outputfile = root+".asm"
+    linecount =0
     count =0
     with open(inputfile) as f:
         lines = f.readlines()
         for line in lines:
             count += 1
+            linecount +=1
+            print("line "+str(linecount))
             if line.startswith('//'):
                 continue
             else:
                 line.strip('\n')
                 type = commandType(line)
                 if type == "C_ARITHMETIC":
-                    arg1 = whatArithmetic(line)
-                    newlines = writeArithmetic(arg1,line,count)
+                    argument1 = whatArithmetic(line)
+                    newlines = writeArithmetic(argument1,line,count,outputfile)
                 elif type == "C_PUSH":
-                    arg1, arg2 = getArguments(line)
-                    newlines= writePushPop("PUSH",arg1,arg2,line)
+                    argument1, argument2 = getArguments(line)
+                    newlines= writePushPop("PUSH",argument1,argument2,line,outputfile)
                 elif type == "C_POP":
-                    arg1, arg2 = getArguments(line)
-                    newlines = writePushPop("POP",arg1,arg2,line)
+                    argument1, argument2 = getArguments(line)
+                    newlines = writePushPop("POP",argument1,argument2,line,outputfile)
                 else:
                     print("invalid type")
 
 
 
 
+#Main("BasicTest.vm")
+#Main("StaticTest.vm")
+#Main("StackTest.vm")
+#Main("SimpleAdd.vm")
+#Main("PointerTest.vm")
 Main()
