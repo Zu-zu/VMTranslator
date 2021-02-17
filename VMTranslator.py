@@ -50,6 +50,8 @@ def getArguments(line):
         arg1 = "TEMP"
     elif arga =="pointer":
         arg1 = "POINT"
+    elif arga =="static":
+        arg1 ="STATIC"
     else:
         print("invalid arg1")
     return arg1, arg2
@@ -124,7 +126,7 @@ def writeArithmetic(segment,line,count,outputfile):
         f.write("M=-M\n")
         f.close()
     elif segment =="EQ":
-        f.open(outputfile,'a')
+        f=open(outputfile,'a')
         f.write("//"+line)
         f.write("@SP\n")
         f.write("AM = M-1\n")
@@ -145,7 +147,7 @@ def writeArithmetic(segment,line,count,outputfile):
         f.write("(@Back"+count+")\n")
         f.close()
     elif segment == "LT":
-        f.open(outputfile,'a')
+        f=open(outputfile,'a')
         f.write("//"+line)
         f.write("@SP\n")
         f.write("AM = M-1\n")
@@ -166,7 +168,7 @@ def writeArithmetic(segment,line,count,outputfile):
         f.write("(@Back"+count+")\n")
         f.close()
     elif segment == "GT":
-        f.open(outputfile,'a')
+        f=open(outputfile,'a')
         f.write("//"+line)
         f.write("@SP\n")
         f.write("AM = M-1\n")
@@ -187,7 +189,7 @@ def writeArithmetic(segment,line,count,outputfile):
         f.write("(@Back"+count+")\n")
         f.close()
     elif segment == "AND":
-        f.open(outputfile,'a')
+        f=open(outputfile,'a')
         f.write("//"+line)
         f.write("@SP\n")
         f.write("AM = M-1\n")
@@ -208,7 +210,7 @@ def writeArithmetic(segment,line,count,outputfile):
         f.write("(@Back"+count+")\n")
         f.close()
     elif segment == "OR":
-        f.open(outputfile,'a')
+        f=open(outputfile,'a')
         f.write("//"+line)
         f.write("@SP\n")
         f.write("AM = M-1\n")
@@ -229,7 +231,7 @@ def writeArithmetic(segment,line,count,outputfile):
         f.write("(@Back"+count+")\n")
         f.close()
     elif segment == "NOT":
-        f.open(outputfile,'a')
+        f=open(outputfile,'a')
         f.write("//"+line)
         f.write("@SP\n")
         f.write("A=A-1\n")
