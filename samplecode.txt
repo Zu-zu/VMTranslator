@@ -1,0 +1,5 @@
+push constant 10
+pop local 8
+push constant 2
+add
+neg
